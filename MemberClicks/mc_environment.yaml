@@ -1,0 +1,11 @@
+#### DEPRECATED ####
+
+name: nwis-pipeline
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - snakemake
+  - pandas
+  - pygeohydro
+  - dataretrieval

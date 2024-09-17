@@ -1,2 +1,2 @@
 # membership-dues-tracker
-Workflows for tracking payments of CUAHSI membership dues over time.
+Code and processes for management of membership dues and lists of CUAHSI representatives.
