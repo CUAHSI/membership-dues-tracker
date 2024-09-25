@@ -12,3 +12,4 @@ _targets*/*
 # For now, ignore in/*
 # TODO: CHANGE!
 */in/*
+!*/in/.placeholder
