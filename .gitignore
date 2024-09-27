@@ -9,7 +9,6 @@ _targets*/*
 */tmp/*
 !*.placeholder
 
-# For now, ignore in/*
-# TODO: CHANGE!
-*/in/*
-!*/in/.placeholder
+# For now, ignore this data file until 
+#   we download it from somewhere
+transaction-report*.csv
