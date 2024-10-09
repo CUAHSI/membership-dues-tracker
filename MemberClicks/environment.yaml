@@ -1,11 +1,10 @@
-#### DEPRECATED ####
-
-name: nwis-pipeline
+name: membership-analysis-workflow
 channels:
   - conda-forge
   - bioconda
 dependencies:
   - snakemake
   - pandas
-  - pygeohydro
-  - dataretrieval
+  - unicodedata
+  - matplotlib
+  - seaborn
