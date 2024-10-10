@@ -1,0 +1,15 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+
+# Ignore targets build artifacts
+_targets*/*
+*/out/*
+*/tmp/*
+!*.placeholder
+
+# For now, ignore in/*
+# TODO: CHANGE!
+*/in/*
+!*/in/.placeholder
