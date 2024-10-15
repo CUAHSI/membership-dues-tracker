@@ -1,7 +1,7 @@
 # define dates of exports from memberclicks (YYMMDD)
-transaction_export_date = '241009'
-institutions_export_date = '240923'
-representatives_export_date = '240923'
+transaction_export_date = '241015'
+institutions_export_date = '241015'
+representatives_export_date = '241015'
 
 # information on rep status export
 # active: paid dues this current year
