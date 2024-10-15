@@ -1,0 +1,10 @@
+name: membership-analysis-workflow
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - snakemake
+  - pandas
+  - unicodedata
+  - matplotlib
+  - seaborn
