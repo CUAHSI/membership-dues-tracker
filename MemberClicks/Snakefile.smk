@@ -1,9 +1,19 @@
-# for now put date of most recent export (YYMMDD) from memberclicks
-export_date = '241009'
+# define dates of exports from memberclicks (YYMMDD)
+transaction_export_date = '241009'
+institutions_export_date = '240923'
+representatives_export_date = '240923'
 
+# information on rep status export
+# active: paid dues this current year
+# lapsed: did not pay dues for this year
+# note -- can modify this to include graced for next year
+member_statuses = ['active','lapsed']
+
+
+# the final target of the pipeline is a list of reps grouped by their member status
 rule all:
 	input:
-		f"04_process_transactions/out/{export_date}_membership_payment_status.csv"
+		expand(f'07_munge_representatives/out/{transaction_export_date}_{{member_status}}_representatives_list.csv',member_status = member_statuses)
 
 ################################# FETCHING #########################################
 
@@ -23,27 +33,27 @@ rule all:
 
 rule clean_institutions_export:
 	input:
-		in_filename = "./02_clean/src/in/240923_institutions_export.csv"
+		in_filename = f'02_clean/src/in/{institutions_export_date}_institutions_export.csv'
 	output:
-		out_filename = "./02_clean/src/tmp/cleaned_institutions_export.csv"
+		out_filename = '02_clean/src/tmp/cleaned_institutions_list.csv'
 	script:
-		"./02_clean/src/clean_institutions_export.py"
+		'02_clean/src/clean_institutions_export.py'
 
 rule clean_representatives_export:
 	input:
-		in_filename = "./02_clean/src/in/240923_representatives_export.csv"
+		in_filename = f'02_clean/src/in/{representatives_export_date}_representatives_export.csv'
 	output:
-		out_filename = "./02_clean/src/tmp/cleaned_representatives_export.csv"
+		out_filename = '02_clean/src/tmp/cleaned_representatives_list.csv'
 	script:
-		"./02_clean/src/clean_representatives_export.py"
+		'02_clean/src/clean_representatives_export.py'
 
 rule clean_transaction_report:
 	input:
-		in_filename = "./03_clean/src/in/24109_transaction_report.csv"
+		in_filename = f'02_clean/src/in/{transaction_export_date}_transaction_report.csv'
 	output:
-		out_filename = "./02_clean/src/tmp/cleaned_transaction_report.csv"
+		out_filename = '02_clean/src/tmp/cleaned_transaction_report.csv'
 	script:
-		"./02_clean/src/clean_transaction_report.py"
+		'02_clean/src/clean_transaction_report.py'
 
 ################################# MUNGING #########################################
 
@@ -58,44 +68,44 @@ rule clean_transaction_report:
 
 rule modify_payments:
 	input:
-		in_filename = './02_clean/src/tmp/cleaned_transaction_report.csv'
+		in_filename = '02_clean/src/tmp/cleaned_transaction_report.csv'
 	output:
-		out_filename = './03_munge_transactions/src/tmp/modified_transaction_report.csv'
+		out_filename = '03_munge_transactions/src/tmp/modified_transaction_report.csv'
 	script:
-		"./03_munge_transactions/src/modify_payments.py"
+		'03_munge_transactions/src/modify_payments.py'
 
 rule join_member_type:
 	input:
-		in_institutions_filename = './02_clean/src/tmp/cleaned_institutions_list.csv', 
-		in_transactions_filename = './03_munge_transactions/src/tmp/modified_transaction_report.csv'
+		in_institutions_filename = '02_clean/src/tmp/cleaned_institutions_list.csv', 
+		in_transactions_filename = '03_munge_transactions/src/tmp/modified_transaction_report.csv'
 	output:
-		out_filename = './03_munge_transactions/src/tmp/joined_transaction_report.csv'
+		out_filename = '03_munge_transactions/src/tmp/joined_transaction_report.csv'
 	script:
-		"./03_munge_transactions/src/join_member_type.py"
+		'03_munge_transactions/src/join_member_type.py'
 
 rule convert_values:
 	input:
-		in_filename = './03_munge_transactions/src/tmp/joined_transaction_report.csv' 
+		in_filename = '03_munge_transactions/src/tmp/joined_transaction_report.csv' 
 	output:
-		out_filename = './03_munge_transactions/src/tmp/converted_transaction_report.csv'
+		out_filename = '03_munge_transactions/src/tmp/converted_transaction_report.csv'
 	script:
-		"./03_munge_transactions/src/convert_values.py"
+		'03_munge_transactions/src/convert_values.py'
 
 rule combine_payments:
 	input:
-		in_filename = './03_munge_transactions/src/tmp/converted_transaction_report.csv' 
+		in_filename = '03_munge_transactions/src/tmp/converted_transaction_report.csv' 
 	output:
-		out_filename = './03_munge_transactions/src/tmp/combined_transaction_report.csv'
+		out_filename = '03_munge_transactions/src/tmp/combined_transaction_report.csv'
 	script:
-		"./03_munge_transactions/src/combine_payments.py"
+		'03_munge_transactions/src/combine_payments.py'
 
 rule track_initiation_payments:
 	input:
-		in_filename = './03_munge_transactions/src/tmp/combined_transaction_report.csv' 
+		in_filename = '03_munge_transactions/src/tmp/combined_transaction_report.csv' 
 	output:
-		out_filename = './03_munge_transactions/src/tmp/tracked_transaction_report.csv'
+		out_filename = '03_munge_transactions/src/tmp/tracked_transaction_report.csv'
 	script:
-		"./03_munge_transactions/src/track_initiation_payments.py"
+		'03_munge_transactions/src/track_initiation_payments.py'
 
 ################################# PROCESSING #########################################
 
@@ -116,24 +126,70 @@ rule track_initiation_payments:
 
 rule adjust_payments:
 	input:
-		in_filename = './03_munge_transactions/src/tmp/tracked_transaction_report.csv' 
+		in_filename = '03_munge_transactions/src/tmp/tracked_transaction_report.csv' 
 	output:
-		out_filename = './04_process_transactions/src/tmp/adjusted_transaction_report.csv'
+		out_filename = '04_process_transactions/src/tmp/adjusted_transaction_report.csv'
 	script:
-		"./04_process_transactions/src/adjust_payments.py"
+		'04_process_transactions/src/adjust_payments.py'
 
 rule transform_payments:
 	input:
-		in_filename = './04_process_transactions/src/tmp/adjusted_transaction_report.csv' 
+		in_filename = '04_process_transactions/src/tmp/adjusted_transaction_report.csv' 
 	output:
-		out_filename = './04_process_transactions/src/tmp/transformed_transaction_report.csv'
+		out_filename = '04_process_transactions/src/tmp/transformed_transaction_report.csv'
 	script:
-		"./04_process_transactions/src/transform_payments.py"
+		'04_process_transactions/src/transform_payments.py'
 
 rule spread_payments:
 	input:
-		in_filename = './04_process_transactions/src/tmp/transformed_transaction_report.csv' 
+		in_filename = '04_process_transactions/src/tmp/transformed_transaction_report.csv' 
 	output:
-		out_filename = f"04_process_transactions/out/{export_date}_membership_payment_status.csv"
+		out_filename = f'04_process_transactions/out/{transaction_export_date}_membership_payments.csv'
 	script:
-		"./04_process_transactions/src/spread_payments.py"
+		'04_process_transactions/src/spread_payments.py'
+
+
+############################ VISUALIZE TRANSACTIONS #######################################
+
+# this folder is a placeholder for the moment for generating heatmap of transaction data
+# across institutions over time
+
+
+
+########################### INSTITIUTION MUNGING #########################################
+
+# get membership status (active/lapsed/long-lapsed), filter and report accordingly
+
+# will also create summary table here of member institutions grouped by status over time
+
+rule get_membership_status:
+	input:
+		in_filename = f'04_process_transactions/out/{transaction_export_date}_membership_payments.csv'
+	params:
+		statuses = member_statuses
+	output:
+		out_filename = f'06_munge_institutions/out/{transaction_export_date}_membership_status.csv'
+	script:
+		'06_munge_institutions/src/get_membership_status.py'
+
+rule filter_institutions:
+	input:
+		in_filename = f'06_munge_institutions/out/{transaction_export_date}_membership_status.csv'
+	params:
+		member_status = f'{{member_status}}'
+	output:
+		out_filename = f'06_munge_institutions/src/tmp/{transaction_export_date}_{{member_status}}_institutions_list.csv'
+	script:
+		'06_munge_institutions/src/filter_institutions.py'
+
+########################### REPRESENTATIVE MUNGING #######################################
+
+# group representatives based on membership status
+rule get_representatives_lists:
+	input:
+		in_institutions_filename = f'06_munge_institutions/src/tmp/{transaction_export_date}_{{member_status}}_institutions_list.csv',
+		in_representatives_filename = '02_clean/src/tmp/cleaned_representatives_list.csv'
+	output:
+		out_representatives_filename = f'07_munge_representatives/out/{transaction_export_date}_{{member_status}}_representatives_list.csv'
+	script:
+		'07_munge_representatives/src/get_representatives_lists.py'

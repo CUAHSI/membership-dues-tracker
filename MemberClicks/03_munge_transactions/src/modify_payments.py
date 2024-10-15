@@ -70,15 +70,15 @@ def modify_transaction_date(df):
             'Payment Line': 1,
             'Retroactive Transaction Date': '1/1/2022  12:00:00 AM',
         }
-        # # see link to invoice in question for Northern Arizona University in question: https://cuahsi.memberclicks.net/administrator/index.php?option=com_mcpaymentmanagement#/view-invoice/200684290
-        # # I think Invoice ID 421, payment line 1 is paying for 2019 even though invoice was paid on 2/20/20 (see description field)
-        # ,
-        # 'Northern Arizona University':
-        # {
-        #     'Invoice ID': 421,
-        #     'Payment Line': 1,
-        #     'Retroactive Transaction Date': '1/16/2019 12:00:00 AM',
-        # }      
+        # see link to invoice in question for Northern Arizona University in question: https://cuahsi.memberclicks.net/administrator/index.php?option=com_mcpaymentmanagement#/view-invoice/200684290
+        # I think Invoice ID 421, payment line 1 is paying for 2019 even though invoice was paid on 2/20/20 (see description field)
+        ,
+        'Northern Arizona University':
+        {
+            'Invoice ID': 421,
+            'Payment Line': 1,
+            'Retroactive Transaction Date': '1/16/2019 12:00:00 AM',
+        }      
     }
 
     for institution in retroactive_transactions.keys():

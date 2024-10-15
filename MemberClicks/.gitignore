@@ -2,3 +2,4 @@
 *.pdf
 *.pyc
 .snakemake/*
+07_visualize/

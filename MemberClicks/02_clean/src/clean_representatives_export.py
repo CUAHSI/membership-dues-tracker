@@ -9,7 +9,7 @@ def read_input_file(in_file):
 def modify_column_names(df):
 
     old_columns = ['[Name | Last]','[Name | First]','[Organization]','[Email | Primary]','[Member Type]','[Last Modified Date]']
-    new_columns = ['First Name','Last Name','Organization','Email','Member Type','Last Modified Date']
+    new_columns = ['Last Name','First Name','Organization','Email','Member Type','Last Modified Date']
 
     for i in range(len(df.columns)):
         df.rename(columns={f'{old_columns[i]}':f'{new_columns[i]}'},inplace=True)
