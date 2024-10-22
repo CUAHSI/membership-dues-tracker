@@ -12,8 +12,13 @@ This data analysis workflow uses Snakemake (installation instructions [here](htt
 
 First, create a Conda environment with all the required packages by running the following command: `conda env create -f environment.yaml`
 
-Once in the new environment, we can execute the snakemake pipeline with this command: `snakemake --cores 1 -s Snakefile.smk`
+Then we can go into the new environment with the following command: `conda activate membership-analysis-workflow`
 
-When the jobs are done, an intermediate file of payments spread through 2028 (tabular file used to inspect the actual payment amounts) can be found in `out` folder in [04_process_transactions](04_process_transactions).
+Once in the new environment, we can execute the snakemake pipeline with this command: `snakemake --cores 1 -s Snakefile.smk`. A DAG of the workflow can be found [here](dag.png).
+
+When the jobs are done, the following output files are useful for inspection and dissemination: 
+- A CSV file of payments spread through 2028 (tabular file used to inspect the actual payment amounts) in a newly created `out` folder in [04_process_transactions](04_process_transactions)
+- Two CSV files of representatives from both active and lapsed institutions in a newly created `out` folder in [07_process_transactions](07_process_transactions)
+
 
 

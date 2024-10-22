@@ -12,7 +12,7 @@ def modify_column_names(df):
     old_columns = ['[Organization]','[Member Type]','[Last Modified Date]','[Organization ID]']
     new_columns = ['Organization','Member Type','Last Modified Date','Organization ID']
 
-    for i in range(len(df.columns)):
+    for i in range(len(old_columns)):
         df.rename(columns={f'{old_columns[i]}':f'{new_columns[i]}'},inplace=True)
 
     return df
