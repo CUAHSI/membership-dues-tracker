@@ -7,6 +7,7 @@ source('02_clean/src/prep_transaction_data.R')
 
 p2 <- list(
   
-  tar_target(p2_transaction_data_ready, format_transaction_data_columns(p1_transaction_data_raw))
+  tar_target(p2_transaction_data_ready, 
+             format_transaction_data(p1_transaction_data_raw, p1_institution_type_xwalk))
   
 )
