@@ -5,7 +5,7 @@ p1 <- list(
   
   # Load a recent transaction report manually exported from MemberClicks
   tar_target(p1_transaction_data_csv, 
-             'transaction-report-09-23-2024.csv', 
+             'memberclicks_transaction_report.csv', 
              format='file'),
   tar_target(p1_transaction_data_raw, read_csv(p1_transaction_data_csv,
                                                col_types = list('Profile ID' = 'c'),

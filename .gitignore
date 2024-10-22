@@ -11,4 +11,5 @@ _targets*/*
 
 # For now, ignore this data file until 
 #   we download it from somewhere
-transaction-report*.csv
+memberclicks_transaction_report.csv
+institution_type_xwalk.csv
