@@ -1,0 +1,7 @@
+institution_type,fee_type,start_date,end_date,amount
+University Member,annual,2016-01-01,2024-12-31,200
+University Member,initiation,2016-01-01,2024-12-31,2000
+Non-profit Affiliate Member,annual,2016-01-01,2024-12-31,100
+Non-profit Affiliate Member,initiation,2016-01-01,2024-12-31,500
+Primarily Undergraduate Institution,annual,2016-01-01,2024-12-31,70
+Primarily Undergraduate Institution,initiation,2016-01-01,2024-12-31,700
